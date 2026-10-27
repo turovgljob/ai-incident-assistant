@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: incident-assistant
+  mvc:
+    problemdetails:
+      enabled: true
+
+server:
+  port: ${PORT:8080}
+
+incident:
+  llm:
+    api-key: ${ANTHROPIC_API_KEY:}
+    base-url: ${ANTHROPIC_BASE_URL:https://api.anthropic.com}
+    model: ${ANTHROPIC_MODEL:claude-opus-5-5}
+    effort: ${ANTHROPIC_EFFORT:low}
+    max-tokens: 16000
+    timeout: 90s
+    server-side-fallback: ${ANTHROPIC_SERVER_SIDE_FALLBACK:true}
+  agent:
+    max-attempts: ${AGENT_MAX_ATTEMPTS:3}
+    similar-incidents: 2

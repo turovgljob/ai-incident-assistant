@@ -1,0 +1,77 @@
+[
+  {
+    "name": "External payment provider issue",
+    "description": "An external payment provider (e.g. PayGate) times out, returns 5xx or rejects credentials, so card payments fail.",
+    "default_severity": "high",
+    "signals": ["paygate", "payment provider", "external provider", "provider", "card", "cannot pay", "transactions do not go through", "invalid credentials", "timeouts when calling", "карт", "провайдер", "не проходят"],
+    "fallback_hypothesis": {
+      "title": "Degradation on the external payment provider side",
+      "reasoning": "Matched keywords point to failing calls from payment-service to an external payment provider.",
+      "next_steps": [
+        "Check the provider status page and recent provider notifications.",
+        "In ELK, compare the error and timeout rate of payment-service calls per provider since the incident start.",
+        "Verify that provider credentials and certificates used by payment-service have not expired or been rotated."
+      ]
+    }
+  },
+  {
+    "name": "DB degradation caused by reporting",
+    "description": "Long analytical queries from reporting-service overload PostgreSQL, slowing down transactional endpoints.",
+    "default_severity": "high",
+    "signals": ["reporting", "report", "export", "long-running quer", "long running quer", "slow quer", "analytical quer", "high cpu", "db cpu", "database", "postgres", "response time", "latency", "gateway timeout", "504", "отчет", "отчёт", "выгрузк", "база данных", "медленн"],
+    "fallback_hypothesis": {
+      "title": "Heavy reporting queries saturate the shared database",
+      "reasoning": "Matched keywords point to database load and slow responses, a known pattern caused by reporting-service.",
+      "next_steps": [
+        "Inspect pg_stat_activity for long-running queries and their client application.",
+        "Compare DB CPU and IO graphs with reporting-service job schedules.",
+        "Check p95 latency of /payments/create and api-gateway 504 rate on the same timeline."
+      ]
+    }
+  },
+  {
+    "name": "Notification delivery issue",
+    "description": "notification-service cannot deliver e-mail or SMS because of SMTP/SMS provider problems, while core flows work.",
+    "default_severity": "medium",
+    "signals": ["notification", "e-mail", "email", "sms", "smtp", "do not receive", "not receiving", "not received", "confirmation", "письм", "уведомлен", "смс", "не приход"],
+    "fallback_hypothesis": {
+      "title": "External SMTP/SMS provider is failing",
+      "reasoning": "Matched keywords point to notification delivery, which depends on external SMTP/SMS providers.",
+      "next_steps": [
+        "In ELK, filter notification-service logs for connection and delivery errors by provider.",
+        "Check the SMTP/SMS provider status page and account quotas.",
+        "Check the notification-service outbound queue size and retry backlog."
+      ]
+    }
+  },
+  {
+    "name": "User authentication errors",
+    "description": "Users cannot log in or get 401 responses because auth-service rejects tokens or credentials.",
+    "default_severity": "high",
+    "signals": ["auth", "login", "log in", "sign in", "401", "unauthorized", "token", "signature", "jwt", "авториз", "логин", "войти", "токен", "подпис"],
+    "fallback_hypothesis": {
+      "title": "Token signing or validation mismatch in auth-service",
+      "reasoning": "Matched keywords point to authentication failures such as 401 responses or invalid token signatures.",
+      "next_steps": [
+        "In ELK, check auth-service 401 rate and the token validation error messages.",
+        "Verify that signing keys or JWKS were not rotated without updating all consumers.",
+        "Check recent auth-service and mobile app deployments."
+      ]
+    }
+  },
+  {
+    "name": "Other / unclassified",
+    "description": "The incident does not match any known category and needs manual triage.",
+    "default_severity": "medium",
+    "signals": [],
+    "fallback_hypothesis": {
+      "title": "Recent change or unknown dependency failure",
+      "reasoning": "No known incident pattern matched, so the most common generic causes are checked first.",
+      "next_steps": [
+        "Review deployments and configuration changes made shortly before the incident started.",
+        "In ELK, compare error rates per service for the incident window against the previous day.",
+        "Escalate to the owning team of the most affected service for manual triage."
+      ]
+    }
+  }
+]

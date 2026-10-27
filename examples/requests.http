@@ -1,0 +1,47 @@
+### 1. External payment provider issue
+POST http://localhost:8080/api/v1/incidents/analyze
+Content-Type: application/json
+
+{
+  "description": "Customers complain that card payments often fail, and transactions do not go through. payment-service logs show many timeouts when calling PayGate, starting from 12:05 UTC. Other services look normal."
+}
+
+### 2. DB degradation caused by reporting
+POST http://localhost:8080/api/v1/incidents/analyze
+Content-Type: application/json
+
+{
+  "description": "p95 latency of /payments/create jumped to 6 seconds after 02:00 UTC. PostgreSQL CPU is at 95% and pg_stat_activity shows long-running export queries from reporting-service. api-gateway returns 504 Gateway Timeout to some clients."
+}
+
+### 3. Notification delivery issue
+POST http://localhost:8080/api/v1/incidents/analyze
+Content-Type: application/json
+
+{
+  "description": "Users are not receiving SMS one-time codes for top-up confirmation since 09:40 UTC. notification-service logs show HTTP 503 responses from the SMS gateway. Payments and balances are processed normally."
+}
+
+### 4. User authentication errors, described in Russian
+POST http://localhost:8080/api/v1/incidents/analyze
+Content-Type: application/json
+
+{
+  "description": "Пользователи не могут войти в мобильное приложение. auth-service отвечает 401, в логах ошибки проверки подписи токена. Остальные сервисы работают штатно."
+}
+
+### 5. Unknown pattern
+POST http://localhost:8080/api/v1/incidents/analyze
+Content-Type: application/json
+
+{
+  "description": "Monthly invoices for corporate clients were not generated overnight. billing-service logs show a NullPointerException in InvoiceGenerationJob. No customer complaints so far."
+}
+
+### 6. Validation error
+POST http://localhost:8080/api/v1/incidents/analyze
+Content-Type: application/json
+
+{
+  "description": "   "
+}

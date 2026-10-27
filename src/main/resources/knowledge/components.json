@@ -1,0 +1,13 @@
+[
+  { "name": "api-gateway", "type": "service", "aliases": ["api-gateway", "api gateway", "gateway"] },
+  { "name": "auth-service", "type": "service", "aliases": ["auth-service", "auth service", "authentication", "login", "log in", "авториз", "логин", "войти"] },
+  { "name": "payment-service", "type": "service", "aliases": ["payment-service", "payment service", "payments", "card payment", "платеж", "платёж", "оплат"] },
+  { "name": "billing-service", "type": "service", "aliases": ["billing-service", "billing service", "billing", "balance", "invoice", "top-up", "баланс", "счет", "счёт"] },
+  { "name": "notification-service", "type": "service", "aliases": ["notification-service", "notification service", "notification", "уведомлен"] },
+  { "name": "reporting-service", "type": "service", "aliases": ["reporting-service", "reporting service", "reporting", "report", "export", "отчет", "отчёт", "выгрузк"] },
+  { "name": "PayGate", "type": "external", "aliases": ["paygate", "payment provider", "провайдер"] },
+  { "name": "SMTP provider", "type": "external", "aliases": ["smtp", "e-mail", "email", "письм", "почт"] },
+  { "name": "SMS provider", "type": "external", "aliases": ["sms", "смс"] },
+  { "name": "PostgreSQL", "type": "external", "aliases": ["postgres", "database", "db", "база данных", "бд"] },
+  { "name": "ELK", "type": "external", "aliases": ["elk", "kibana", "elasticsearch"] }
+]
